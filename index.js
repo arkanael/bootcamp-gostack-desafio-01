@@ -4,59 +4,97 @@ const server = express();
 
 server.use(express.json());
 
-const projects = [
-  {"id": "1", "title": "Casa",  "tasks": ["arrumar casa", "lavar banheiro"]},
-  {"id": "2", "title": "Carro",  "tasks": ["levar ao mecânico", "trocar pneu"]},
-  {"id": "3", "title": "Exercício",  "tasks": ["Correr 1km na praia"]}
-];
+let = requisicao = 0; 
 
-//insert
-server.post('/projects', (req, res) => {
-  const { id } = req.body;
-  const { title } = req.body;
-  const { tasks } = req.body;
+const projects = [];
 
-  projects.push({id, title, tasks});
+server.use((req, res, next) => {
+  requisicao ++;
+  console.log(`Quantidade de Requisições feitas: ${requisicao}`)
+  next();
+});
+
+function checkFormatTarefa(req, res, next){
+  if(!req.body.id || !req.body.title ){
+    return res.status(400).json({erro: 'Formato inválido.'})
+  }
+  
+  return next(); 
+}
+
+function checkFormatTasks(req, res, next){
+  if(!req.body.tasks.title){
+    return res.status(400).json({erro: 'Formato da task inválido.'})
+  }
+
+  return next();
+}
+
+function existeTarefa(req, res, next){
+  const { id } = req.params;
+
+  const tarefa = projects.find(projects => projects.id == id)
+  
+  if (!tarefa) {
+    return res.status(400).json({error: 'Tarefa não encontrada.'});
+  }
+  
+  req.tarefa = tarefa;
+  return next();
+}
+
+server.post('/projects', checkFormatTarefa,(req, res) => {
+  const { id, title } = req.body;
+  
+  const project = {
+    id,
+    title,
+    tasks: []
+  };
+
+ if (projects.find(projects => projects.id == id)) {
+  return res.status(400).json({error: `O id: ${id} já encontra-se em uso, por favor escolha outro.`});
+ }
+
+  project.id = id;
+  project.title = title;
+
+  projects.push(project);
  
   return res.json(projects);
 })
 
-//update
-server.put('/projects/:id', (req, res) => {
-  const { id } = req.params;
+server.post('/projects/:id/tasks', existeTarefa, (req, res) => {
   const { title } = req.body;
-  const { tasks } = req.body;
-
-  const tarefa = projects.find( projects => projects.id == id);
   
-  tarefa.title = title;
-  tarefa.tasks = tasks;
+  req.tarefa.tasks.push(title);
+  console.log(req.tarefa);
 
-  return res.json(projects);
-
+  return res.json(req.tarefa);
+  
 });
 
-//delete
-server.delete('/projects/:id', (req, res) =>{
-  const { id } = req.params;
-  const tarefa = projects.find(projects => projects.id == id)
+server.put('/projects/:id', existeTarefa, (req, res) => {
+  const { title } = req.body;
+  const { tasks } = req.body;
+  
+  req.tarefa.title = title;
+  req.tarefa.tasks = tasks;
 
-  projects.splice(tarefa, 1)
+  return res.json(req.tarefa);
+});
+
+server.delete('/projects/:id', existeTarefa, (req, res) =>{
+   projects.splice(tarefa => tarefa.id == req.tarefa.id, 1)
   return res.json(projects);
 })
 
-//getall
 server.get('/projects', (req, res) => {
   return res.json(projects);
 })
 
-//getbyid
-server.get('/projects/:id', (req, res) => {
-  const { id } = req.params;
-
-  const tarefa = projects.find( projects => projects.id == id);
-
-  return res.json(tarefa);
+server.get('/projects/:id', existeTarefa, (req, res) => {
+  return res.json(projects.find(projects => projects.id == req.tarefa.id));
 });
 
 server.listen(3000)
