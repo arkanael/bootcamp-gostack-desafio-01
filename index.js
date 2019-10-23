@@ -14,46 +14,34 @@ server.use((req, res, next) => {
   next();
 });
 
-function checkFormatTarefa(req, res, next){
-  if(!req.body.id || !req.body.title ){
-    return res.status(400).json({erro: 'Formato inválido.'})
-  }
-  
-  return next(); 
-}
-
-function checkFormatTasks(req, res, next){
-  if(!req.body.tasks.title){
-    return res.status(400).json({erro: 'Formato da task inválido.'})
-  }
-
-  return next();
-}
-
-function existeTarefa(req, res, next){
+function existeProjeto(req, res, next){
   const { id } = req.params;
 
-  const tarefa = projects.find(projects => projects.id == id)
+  const project = projects.find(projects => projects.id == id)
   
-  if (!tarefa) {
+  if (!project) {
     return res.status(400).json({error: 'Tarefa não encontrada.'});
   }
   
-  req.tarefa = tarefa;
+  req.project = project;
   return next();
 }
 
-server.post('/projects', checkFormatTarefa,(req, res) => {
+server.post('/projects',(req, res) => {
   const { id, title } = req.body;
-  
+
+  if(!req.body.id || !req.body.title ){
+    return res.status(400).json({erro: 'Formato da requisição é inválida, por favor acerte-a.'})
+  }
+
   const project = {
     id,
     title,
     tasks: []
   };
 
- if (projects.find(projects => projects.id == id)) {
-  return res.status(400).json({error: `O id: ${id} já encontra-se em uso, por favor escolha outro.`});
+ if (projects.find(project => project.id == id)) {
+  return res.status(400).json({error: `O identificador: ${id} já encontra-se em uso, por favor escolha outro.`});
  }
 
   project.id = id;
@@ -61,40 +49,46 @@ server.post('/projects', checkFormatTarefa,(req, res) => {
 
   projects.push(project);
  
-  return res.json(projects);
+  return res.json(`O projeto: ${project.title} foi cadastrado com sucesso.`);
 })
 
-server.post('/projects/:id/tasks', existeTarefa, (req, res) => {
+server.post('/projects/:id/tasks', existeProjeto, (req, res) => {
   const { title } = req.body;
   
-  req.tarefa.tasks.push(title);
-  console.log(req.tarefa);
+  if(!req.body.title){
+    return res.status(400).json({erro: 'Formato da requisição é inválida, por favor acerte-a.'})
+  }
 
-  return res.json(req.tarefa);
-  
+  req.project.tasks.push(title);
+
+  return res.json(`A tarefa ${title} foi cadastrada com sucesso.`);
+   
 });
 
-server.put('/projects/:id', existeTarefa, (req, res) => {
+server.put('/projects/:id', existeProjeto, (req, res) => {
   const { title } = req.body;
-  const { tasks } = req.body;
-  
-  req.tarefa.title = title;
-  req.tarefa.tasks = tasks;
 
-  return res.json(req.tarefa);
+  if(!req.body.title){
+    return res.status(400).json({erro: 'Formato da requisição é inválida, por favor acerte-a.'})
+  }
+
+  req.project.title = title;
+
+  return res.json(`O projeto ${req.project.title} foi atualizado com sucesso.`);
 });
 
-server.delete('/projects/:id', existeTarefa, (req, res) =>{
-   projects.splice(tarefa => tarefa.id == req.tarefa.id, 1)
-  return res.json(projects);
+server.delete('/projects/:id', existeProjeto, (req, res) =>{
+  projects.splice(project => project.id == req.tarefa.id, 1)
+  
+  return res.json(`O projeto ${req.project.title} foi excluida com sucesso.`);
 })
 
 server.get('/projects', (req, res) => {
   return res.json(projects);
 })
 
-server.get('/projects/:id', existeTarefa, (req, res) => {
-  return res.json(projects.find(projects => projects.id == req.tarefa.id));
+server.get('/projects/:id', existeProjeto, (req, res) => {
+  return res.json(projects.find(project => project.id == req.project.id));
 });
 
 server.listen(3000)

@@ -23,3 +23,41 @@ Middlewares
 Crie um middleware que será utilizado em todas rotas que recebem o ID do projeto nos parâmetros da URL que verifica se o projeto com aquele ID existe. Se não existir retorne um erro, caso contrário permita a requisição continuar normalmente;
 
 Crie um middleware global chamado em todas requisições que imprime (console.log) uma contagem de quantas requisições foram feitas na aplicação até então.
+
+Imagens do projeto: 
+
+<p align="center">
+    <img alt="GoStack" src="./imagens/captura01.PNG" />  
+    <p align="center">Cadastrar novo projeto </p>
+</p>
+<br/>
+
+<p align="center">
+    <img alt="GoStack" src="./imagens/captura03.PNG" />  
+    <p align="center">Cadastrar uma tarefa ao projeto </p>
+</p>
+<br/>
+
+<p align="center">
+    <img alt="GoStack" src="./imagens/captura05.PNG" />  
+    <p align="center">Atualizar projeto </p>
+</p>
+<br/>
+
+<p align="center">
+    <img alt="GoStack" src="./imagens/captura06.PNG" />  
+    <p align="center">Listar todos os projetos </p>
+</p>
+<br/>
+
+<p align="center">
+    <img alt="GoStack" src="./imagens/captura07.PNG" />  
+    <p align="center">Listar projeto por identificador </p>
+</p>
+<br/>
+
+<p align="center">
+    <img alt="GoStack" src="./imagens/captura08.PNG" />  
+    <p align="center">Excluir projeto</p>
+</p>
+<br/>
