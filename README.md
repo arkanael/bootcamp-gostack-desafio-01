@@ -24,52 +24,8 @@ Crie um middleware que será utilizado em todas rotas que recebem o ID do projet
 
 Crie um middleware global chamado em todas requisições que imprime (console.log) uma contagem de quantas requisições foram feitas na aplicação até então.
 
-Video do Projeto: https://drive.google.com/open?id=12-J8nK6CJiKcBPoa_iX-cTD9V71lpKtv
-
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/NWRv242ksGM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
-<video width="800" height="600" controls preload>
-  <source src="https://www.youtube.com/watch?v=NWRv242ksGM" type="video/mp4">
-</video>
-<br/>
-<br/>
-
-Imagens do projeto: 
+### Projeto:
 
 <p align="center">
-    <img alt="GoStack" src="./imagens/captura01.PNG" />  
-    <p align="center">Cadastrar novo projeto </p>
+    <img alt="GoStack" src="./imagens/Desafio01.gif" />  
 </p>
-<br/>
-
-<p align="center">
-    <img alt="GoStack" src="./imagens/captura03.PNG" />  
-    <p align="center">Cadastrar uma tarefa ao projeto </p>
-</p>
-<br/>
-
-<p align="center">
-    <img alt="GoStack" src="./imagens/captura05.PNG" />  
-    <p align="center">Atualizar projeto </p>
-</p>
-<br/>
-
-<p align="center">
-    <img alt="GoStack" src="./imagens/captura06.PNG" />  
-    <p align="center">Listar todos os projetos </p>
-</p>
-<br/>
-
-<p align="center">
-    <img alt="GoStack" src="./imagens/captura07.PNG" />  
-    <p align="center">Listar projeto por identificador </p>
-</p>
-<br/>
-
-<p align="center">
-    <img alt="GoStack" src="./imagens/captura08.PNG" />  
-    <p align="center">Excluir projeto</p>
-</p>
-<br/>
